@@ -1,5 +1,3 @@
-package com.epam.heap;
-
 import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
@@ -20,10 +18,10 @@ public class MemoryEater {
             Runtime rt = Runtime.getRuntime();
 
             System.out.println("free memory: " + rt.freeMemory());
-            /*try {
+            try {
                 Thread.sleep(250);
             } catch (InterruptedException e) {
-            }*/
+            }
         }
     }
 }
