@@ -1,0 +1,31 @@
+apply plugin: 'java'
+apply plugin: 'idea'
+apply plugin: 'ear'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    deploy project(path:':jboss-ejb-war-admin', configuration: 'archives')
+    deploy project(path:':jboss-ejb-war-user', configuration: 'archives')
+    deploy project(':jboss-ejb-ejb')
+    earlib project(':jboss-ejb-domain')
+}
+
+ear {
+    baseName = 'bank-enterprise'
+    deploymentDescriptor {
+        applicationName = "bank-enterprise"
+        displayName = "Bank-enterprise"
+        webModule("jboss-ejb-war-admin.war", "/bank-admin")
+        webModule("jboss-ejb-war-user.war", "/bank-user")
+        module("jboss-ejb-ejb.jar", "ejb")
+    }
+}
+
+idea {
+        module {
+            jdkName = '1.7'
+        }
+}   
