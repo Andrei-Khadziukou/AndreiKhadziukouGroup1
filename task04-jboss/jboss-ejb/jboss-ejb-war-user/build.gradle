@@ -1,0 +1,20 @@
+apply plugin: 'java'
+apply plugin: 'idea'
+apply plugin: 'war'
+
+repositories {
+    jcenter()
+}
+
+dependencies {
+    providedCompile project(":jboss-ejb-ejb")
+    compile 'javax.servlet:jstl:1.2'
+    providedCompile 'javax.enterprise:cdi-api:1.2'
+    providedCompile 'javax.servlet:javax.servlet-api:3.0.1'
+}
+
+idea {
+        module {
+            jdkName = '1.7'
+        }
+    }
