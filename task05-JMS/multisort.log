@@ -1,0 +1,19 @@
+2015-01-17 19:09:23 INFO  PublisherServlet:81 - Message sent [hashCode = 697063908]
+2015-01-17 19:10:25 ERROR Subscriber:45 - Loading properties error: 
+java.lang.NullPointerException
+	at java.util.Properties$LineReader.readLine(Properties.java:434)
+	at java.util.Properties.load0(Properties.java:353)
+	at java.util.Properties.load(Properties.java:341)
+	at com.epam.jms.client.Subscriber.<init>(Subscriber.java:40)
+	at com.epam.jms.client.Subscriber.main(Subscriber.java:105)
+2015-01-17 19:39:53 ERROR Subscriber:46 - Loading properties error: 
+java.lang.NullPointerException
+	at java.util.Properties$LineReader.readLine(Properties.java:434)
+	at java.util.Properties.load0(Properties.java:353)
+	at java.util.Properties.load(Properties.java:341)
+	at com.epam.jms.client.Subscriber.<init>(Subscriber.java:41)
+	at com.epam.jms.client.Subscriber.main(Subscriber.java:106)
+2015-01-17 19:40:34 INFO  PublisherServlet:81 - Message sent [hashCode = 697065830]
+2015-01-17 19:40:34 INFO  Subscriber:81 - Received: DSS
+2015-01-17 20:08:29 INFO  PublisherServlet:81 - Message sent [hashCode = -1612879537]
+2015-01-17 20:09:43 INFO  PublisherServlet:81 - Message sent [hashCode = -1612877615]

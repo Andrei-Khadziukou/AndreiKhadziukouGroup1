@@ -1,0 +1,29 @@
+apply plugin: 'java'
+apply plugin: 'idea'
+apply plugin: 'war'
+apply plugin: 'jetty'
+apply plugin: 'application'
+
+mainClassName = 'com.epam.jms.client.Subscriber'
+
+repositories {
+    jcenter()
+}
+
+dependencies {
+    compile 'org.apache.commons:commons-lang3:3.1'
+    compile(group: 'log4j', name: 'log4j', version: '1.2.17', ext: 'jar')
+    compile(group: 'commons-io', name: 'commons-io', version: '2.4', ext: 'jar')
+    compile 'org.apache.activemq:activemq-all:5.7.0'
+    compile 'org.apache.activemq:activemq-core:5.7.0'
+
+    providedCompile 'javax.servlet:javax.servlet-api:3.0.1'
+	providedCompile 'javax.servlet.jsp:jsp-api:2.1'
+	providedCompile 'javax.servlet:jstl:1.2'
+}
+
+applicationDistribution.from("src/main/resources/configuration.properties") {
+    into "bin"
+}
+
+build.dependsOn.add(distZip)
