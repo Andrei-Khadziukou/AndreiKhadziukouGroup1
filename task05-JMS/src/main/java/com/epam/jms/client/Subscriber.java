@@ -12,6 +12,7 @@ import javax.jms.Message;
 import javax.jms.MessageConsumer;
 import javax.jms.Session;
 import javax.jms.TextMessage;
+
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -46,32 +47,42 @@ public class Subscriber implements ExceptionListener {
     }
 
     private void consume(String topicName) {
+        Connection connection = null;
+        Session session = null;
+        MessageConsumer consumer = null;
         try {
             ActiveMQConnectionFactory connectionFactory = new ActiveMQConnectionFactory(userName, password, brokerURL);
 
-            Connection connection = connectionFactory.createConnection();
+            connection = connectionFactory.createConnection();
             connection.start();
             connection.setExceptionListener(this);
 
-            Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
+            session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
             Destination destination = session.createTopic(topicName);
 
-            MessageConsumer consumer = session.createConsumer(destination);
-            Message message = consumer.receive();
-
-            if (message instanceof TextMessage) {
-                TextMessage textMessage = (TextMessage) message;
-                String text = textMessage.getText();
-                LOGGER.info("Received: " + text);
-            } else {
-                LOGGER.info("Received: " + message);
+            consumer = session.createConsumer(destination);
+            LOGGER.info("Consumer has been started... Recieving.. ");
+            while (true) {
+                Message message = consumer.receive();
+                LOGGER.info("Got message...\n");
+                if (message instanceof TextMessage) {
+                    TextMessage textMessage = (TextMessage) message;
+                    String text = textMessage.getText();
+                    LOGGER.info("Received: " + text);
+                } else {
+                    LOGGER.info("Received: " + message);
+                }
             }
-
-            consumer.close();
-            session.close();
-            connection.close();
         } catch (Exception e) {
             LOGGER.error("Caught: ", e);
+        } finally {
+            try {
+                consumer.close();
+                session.close();
+                connection.close();
+            } catch (Exception e) {
+                LOGGER.error("Closing connection error: ", e);
+            }
         }
     }
 
