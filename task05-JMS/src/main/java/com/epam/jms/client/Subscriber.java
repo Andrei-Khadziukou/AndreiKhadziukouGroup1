@@ -24,8 +24,6 @@ public class Subscriber implements ExceptionListener {
 
     private static Logger LOGGER = Logger.getLogger(Subscriber.class);
 
-    private Properties properties = new Properties();
-
     private String userName;
     private String password;
     private String brokerURL;
@@ -34,6 +32,7 @@ public class Subscriber implements ExceptionListener {
         try {
             File file = new File("configuration.properties");
             InputStream inputStream = new FileInputStream(file);
+            Properties properties = new Properties();
             properties.load(inputStream);
             userName = properties.getProperty("jms.broker.user");
             password = properties.getProperty("jms.broker.password");
