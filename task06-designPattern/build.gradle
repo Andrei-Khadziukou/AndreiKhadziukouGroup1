@@ -1,0 +1,78 @@
+apply plugin: 'java'
+apply plugin: 'idea'
+apply plugin: 'war'
+apply plugin: 'jetty'
+apply plugin: 'application'
+
+apply plugin: 'cobertura'
+apply plugin: 'findbugs'
+apply plugin: 'checkstyle'
+
+mainClassName = 'com.epam.jms.client.Subscriber'
+
+sourceCompatibility = 1.7
+repositories {
+    jcenter()
+}
+
+repositories {
+    jcenter()
+}
+
+dependencies {
+    compile 'org.apache.commons:commons-lang3:3.1'
+    compile(group: 'log4j', name: 'log4j', version: '1.2.17', ext: 'jar')
+    compile(group: 'commons-io', name: 'commons-io', version: '2.4', ext: 'jar')
+    compile 'postgresql:postgresql:9.1-901.jdbc4'
+
+    providedCompile 'javax.servlet:javax.servlet-api:3.1.0'
+    providedCompile 'javax.servlet.jsp:jsp-api:2.1'
+    providedCompile 'javax.servlet:jstl:1.2'
+}
+
+applicationDistribution.from("src/main/resources/config.properties") {
+    into "bin"
+}
+
+cobertura {
+    coverageFormats = ['html', 'xml']
+    coverageIgnoreTrivial = true
+    coverageIgnores = ['org.slf4j.Logger.*', 'javax.ejb.Singleton']
+    coverageReportDir = new File("$buildDir/reports/cobertura")
+}
+test.finalizedBy(project.tasks.cobertura)
+checkstyle {
+    configFile = new File("config/checkstyle/checkstyle.xml")
+}
+checkstyleMain << {
+    ant.xslt(in: reports.xml.destination,
+            style: new File("config/checkstyle/checkstyle-noframes-sorted.xsl"),
+            out: new File(reports.xml.destination.parent, 'main.html'))
+}
+findbugs {
+    toolVersion = "2.0.1"
+    sourceSets = [sourceSets.main]
+    ignoreFailures = true
+    reportsDir = file("$project.buildDir/reports/findbugs")
+    effort = "max"
+    reportLevel = "low"
+    visitors = ["FindSqlInjection", "SwitchFallthrough"]
+    omitVisitors = ["FindNonShortCircuit"]
+}
+tasks.withType(FindBugs) {
+    reports {
+        xml.enabled = false
+        html.enabled = true
+    }
+}
+
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath "net.saliman:gradle-cobertura-plugin:2.2.4"
+    }
+}
+
+build.dependsOn.add(distZip)
