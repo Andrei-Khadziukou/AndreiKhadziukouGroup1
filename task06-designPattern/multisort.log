@@ -17,3 +17,6 @@ java.lang.NullPointerException
 2015-01-17 19:40:34 INFO  Subscriber:81 - Received: DSS
 2015-01-17 20:08:29 INFO  PublisherServlet:81 - Message sent [hashCode = -1612879537]
 2015-01-17 20:09:43 INFO  PublisherServlet:81 - Message sent [hashCode = -1612877615]
+2015-02-04 12:15:47 INFO  DBConnectionManager:37 - Connection has been established! URL=[jdbc:postgresql://localhost:5432/postgres] dbUser=[postgres]
+2015-02-04 12:15:47 INFO  AppContextListener:34 - Database connection initialized for Application.
+2015-02-04 16:20:52 INFO  DBConnectionManager:54 - Connection has been closed! URL=[jdbc:postgresql://localhost:5432/postgres] dbUser=[postgres]
