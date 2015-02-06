@@ -22,7 +22,7 @@ create table ticket_place_map (
 );
 
 create table users (
-	user_id integer NOT NULL,
+	user_id VARCHAR(2) NOT NULL,
 	user_name VARCHAR(128),
 	balance DECIMAL
 )

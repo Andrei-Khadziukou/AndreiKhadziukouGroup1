@@ -15,11 +15,10 @@ public class Ticket extends StorageDomain {
     private BigDecimal cost;
     private Integer count;
 
-    public Ticket(String id, String sessionName, BigDecimal cost, Integer count) {
+    public Ticket(String id, String sessionName, BigDecimal cost) {
         setId(id);
         setName(sessionName);
         this.cost = cost;
-        this.count = count;
     }
 
     public BigDecimal getCost() {
