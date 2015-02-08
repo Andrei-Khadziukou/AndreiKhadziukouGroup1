@@ -1,4 +1,8 @@
 .hero-unit {
-    width: 219px;
+    width: 360px;
     margin: auto;
+}
+
+.value {
+    color: red;
 }

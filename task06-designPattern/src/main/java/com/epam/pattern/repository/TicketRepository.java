@@ -1,8 +1,6 @@
 package com.epam.pattern.repository;
 
 import com.epam.pattern.domain.Ticket;
-import com.epam.pattern.system.DBConnectionManager;
-
 import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -13,32 +11,47 @@ import java.util.List;
 
 /**
  * task06-designPattern class
- * <p/>
- * Copyright (C) 2015 copyright.com
- * <p/>
  * Date: Sep 02, 2015
  *
  * @author Aliaksandr_Shynkevich
  */
 public class TicketRepository extends AbstractRepository<Ticket> {
 
-    private static final String READ_SQL = "SELECT * FROM tickets ORDER BY session_name asc";
+    private static final String READ_SQL = "SELECT t.ticket_id, t.session_name, t.ticket_cost, tpm.amount " +
+            "FROM tickets t, (SELECT ticket_id, count(*) as amount FROM ticket_place_map GROUP BY ticket_id) tpm " +
+            "WHERE t.ticket_id = tpm.ticket_id ORDER BY t.session_name asc";
+
     private static final String INSERT_SQL = "INSERT INTO tickets (session_name, ticket_cost, ticket_id) VALUES (?,?,?)";
     private static final String UPDATE_SQL = "UPDATE tickets SET session_name = ?, ticket_cost = ? where ticket_id = ?";
+    private static final String SELECT_PLACES_SQL = "SELECT count(*) FROM ticket_place_map WHERE ticket_id = ? " +
+            "AND place_number in (%s)";
+    private static final String DELETE_PLACES_SQL = "DELETE FROM ticket_place_map WHERE ticket_id " +
+            "= ? AND place_number in (%s)";
 
-    public TicketRepository(DBConnectionManager manager) {
-        super(manager);
-    }
-
-    public List<Ticket> readAll() throws SQLException {
+    public List<Ticket> readAll(Connection connection) throws SQLException {
         PreparedStatement preparedStatement =
-                getConnection().prepareStatement(String.format(READ_SQL, getTableName(), getIdColumnName()));
+                connection.prepareStatement(String.format(READ_SQL, getTableName(), getIdColumnName()));
         ResultSet resultSet = preparedStatement.executeQuery();
         List<Ticket> tickets = new ArrayList<>();
         while (resultSet.next()) {
-            tickets.add(getTicket(resultSet));
+            Ticket ticket = getTicket(resultSet);
+            ticket.setCount(resultSet.getInt("amount"));
+            tickets.add(ticket);
         }
         return tickets;
+    }
+
+    public int getCountExistsPlaces(String ticketId, String placeNumbers, Connection connection) throws SQLException {
+        PreparedStatement statement = connection.prepareStatement(String.format(SELECT_PLACES_SQL, placeNumbers));
+        statement.setString(1, ticketId);
+        ResultSet resultSet = statement.executeQuery();
+        return (resultSet.next()) ? resultSet.getInt(1) : 0;
+    }
+
+    public void sellPlaces(String ticketId, String placeNumbers, Connection connection) throws SQLException {
+        PreparedStatement statement = connection.prepareStatement(String.format(DELETE_PLACES_SQL, placeNumbers));
+        statement.setString(1, ticketId);
+        statement.executeUpdate();
     }
 
     @Override
@@ -52,13 +65,13 @@ public class TicketRepository extends AbstractRepository<Ticket> {
     }
 
     @Override
-    protected PreparedStatement getCreateStatement(Ticket entity) throws SQLException {
-        return getStatement(INSERT_SQL, entity);
+    protected PreparedStatement getCreateStatement(Ticket entity, Connection connection) throws SQLException {
+        return getStatement(INSERT_SQL, entity, connection);
     }
 
     @Override
-    protected PreparedStatement getUpdateStatement(Ticket entity) throws SQLException {
-        return getStatement(UPDATE_SQL, entity);
+    protected PreparedStatement getUpdateStatement(Ticket entity, Connection connection) throws SQLException {
+        return getStatement(UPDATE_SQL, entity, connection);
     }
 
     @Override
@@ -74,11 +87,12 @@ public class TicketRepository extends AbstractRepository<Ticket> {
         String id = resultSet.getString(getIdColumnName());
         String name = resultSet.getString("session_name");
         BigDecimal cost = resultSet.getBigDecimal("ticket_cost");
-        return new Ticket(id, name, cost);
+        Ticket ticket = new Ticket(id, name, cost);
+        return ticket;
     }
 
-    private PreparedStatement getStatement(String sql, Ticket entity) throws SQLException {
-        PreparedStatement statement = getConnection().prepareStatement(sql);
+    private PreparedStatement getStatement(String sql, Ticket entity, Connection connection) throws SQLException {
+        PreparedStatement statement = connection.prepareStatement(sql);
         statement.setString(1, entity.getName());
         statement.setBigDecimal(2, entity.getCost());
         statement.setString(3, entity.getId());

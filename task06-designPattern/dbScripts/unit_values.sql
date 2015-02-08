@@ -38,6 +38,6 @@ INSERT into ticket_place_map (ticket_id, place_number) VALUES ('t4',39);
 
 INSERT into users (user_id, user_name, balance) VALUES ('1', 'Alex', 400);
 INSERT into users (user_id, user_name, balance) VALUES ('2', 'Michael', 200);
-INSERT into users (user_id, user_name, balance) VALUES ('3', 'Cinema', 0);
+INSERT into users (user_id, user_name, balance) VALUES ('0', 'Cinema', 0);
 
 

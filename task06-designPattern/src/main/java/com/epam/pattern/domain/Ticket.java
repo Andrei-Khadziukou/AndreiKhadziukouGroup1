@@ -4,9 +4,6 @@ import java.math.BigDecimal;
 
 /**
  * task06-designPattern class
- * <p/>
- * Copyright (C) 2015 copyright.com
- * <p/>
  * Date: Sep 02, 2015
  *
  * @author Aliaksandr_Shynkevich

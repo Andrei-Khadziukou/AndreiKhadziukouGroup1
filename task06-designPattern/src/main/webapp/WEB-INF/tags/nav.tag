@@ -10,12 +10,14 @@
     </div>
     <div class="collapse navbar-collapse">
       <ul class="nav navbar-nav">
-        <li><a href="<c:url value='/' />">Tickets</a></li>
-        <li><a href="<c:url value='/order' />">Make order</a></li>
+        <li><a href="<c:url value='/cinema/home' />">Tickets</a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-            <li><a href="<c:url value='/logout' />">Logout</a></li>
+        <li><b><c:out value="${user.name}"/></b><br/>Balance: <c:out value="${user.balance}"/></li>
       </ul>
     </div>
   </div>
 </div>
+<c:if test="${not empty error}">
+        <div class="alert alert-danger" role="alert"><c:out value="${error}"/></div>
+</c:if>

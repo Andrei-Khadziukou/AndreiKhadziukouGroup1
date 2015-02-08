@@ -4,6 +4,7 @@
 <%@ taglib tagdir="/WEB-INF/tags" prefix="s" %>
 
 <%@ attribute name="title" required="false" rtexprvalue="true" type="java.lang.String" %>
+<%@ attribute name="isNav" required="false" rtexprvalue="true" type="java.lang.Boolean" %>
 
 <!DOCTYPE html>
 
@@ -21,6 +22,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
     <!-- Optional theme -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="<c:url value='/css/main.css' />"/>
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <!-- Latest compiled and minified JavaScript -->
@@ -35,7 +37,10 @@
 </head>
 
 <body>
-  <s:nav />
+<c:set var="isShowNav" value="${(empty isNav) ? true : isNav}" />
+<c:if test="${isShowNav}">
+    <s:nav />
+</c:if>
   <div class="container">
     <div class="article">
       <jsp:doBody />
