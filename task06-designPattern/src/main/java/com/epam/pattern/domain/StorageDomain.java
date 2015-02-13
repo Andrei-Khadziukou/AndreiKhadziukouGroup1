@@ -1,5 +1,7 @@
 package com.epam.pattern.domain;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+
 /**
  * task06-designPattern class
  * Date: Sep 02, 2015
@@ -24,5 +26,25 @@ public class StorageDomain {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        StorageDomain that = (StorageDomain) obj;
+        return new EqualsBuilder()
+                .append(id, that.id)
+                .append(name, that.name)
+                .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new EqualsBuilder().append(id, name).hashCode();
     }
 }

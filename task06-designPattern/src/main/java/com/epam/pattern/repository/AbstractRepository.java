@@ -12,7 +12,7 @@ import java.sql.SQLException;
  *
  * @author Aliaksandr_Shynkevich
  */
-public abstract class AbstractRepository<T extends StorageDomain> {
+public abstract class AbstractRepository<T extends StorageDomain> implements ICRUD<T> {
 
     private static final String READ_SQL = "SELECT * FROM %s WHERE %s = ?";
     private static final String DELETE_SQL = "DELETE FROM %s WHERE %s = ?";

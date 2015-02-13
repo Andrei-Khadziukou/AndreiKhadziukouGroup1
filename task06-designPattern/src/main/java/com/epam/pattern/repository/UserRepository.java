@@ -16,8 +16,7 @@ public class UserRepository extends AbstractRepository<User> {
 
     private static final String READ_SQL = "SELECT * FROM users WHERE user_id <> '0'";
     private static final String READ_BY_NAME_SQL = "SELECT * FROM users WHERE user_name = ?";
-    private static final String WITHDRAWAL_SQL = "UPDATE users SET balance = (balance - ?) WHERE user_id = ?";
-    private static final String OVERCHARGING_SQL = "UPDATE users SET balance = (balance + ?) WHERE user_id = ?";
+    private static final String UPDATE_BALANCE = "UPDATE users SET balance = ? WHERE user_id = ?";
 
     public List<User> findUsers(Connection connection) throws SQLException {
         ResultSet resultSet = connection.prepareStatement(READ_SQL).executeQuery();
@@ -35,18 +34,10 @@ public class UserRepository extends AbstractRepository<User> {
         return wrapObject(resultSet);
     }
 
-    public void withdrawal(String id, BigDecimal amount, Connection connection) throws SQLException {
-       updateBalance(id, amount, WITHDRAWAL_SQL,  connection);
-    }
-
-    public void overcharging(String id, BigDecimal amount, Connection connection) throws SQLException {
-        updateBalance(id, amount, OVERCHARGING_SQL,  connection);
-    }
-
-    private void updateBalance(String id, BigDecimal amount, String sql, Connection connection) throws SQLException {
-        PreparedStatement statement = connection.prepareStatement(sql);
-        statement.setBigDecimal(1, amount);
-        statement.setString(2, id);
+    public void updateBalance(User user, Connection connection) throws SQLException{
+        PreparedStatement statement = connection.prepareStatement(UPDATE_BALANCE);
+        statement.setBigDecimal(1, user.getBalance());
+        statement.setString(2, user.getId());
         statement.executeUpdate();
     }
 

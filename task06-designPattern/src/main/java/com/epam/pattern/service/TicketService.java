@@ -6,13 +6,14 @@ import com.epam.pattern.domain.User;
 import com.epam.pattern.repository.TicketRepository;
 import com.epam.pattern.repository.UserRepository;
 import com.epam.pattern.system.DBConnectionManager;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.Logger;
+
 import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Savepoint;
 import java.util.List;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
 
 /**
  * task06-designPattern class
@@ -22,7 +23,7 @@ import org.apache.log4j.Logger;
  */
 public class TicketService extends AbstractService {
     private static final Logger LOGGER = Logger.getLogger(TicketService.class);
-    public static final String CINEMA_ID = "0";
+    public static final User CINEMA_USER = new User("0");
 
     private TicketRepository ticketRepository;
     private UserRepository userRepository;
@@ -65,8 +66,8 @@ public class TicketService extends AbstractService {
                 Ticket ticket = ticketRepository.read(ticketId, connection);
                 BigDecimal totalCost = ticket.getCost().multiply(new BigDecimal(placesNum.length));
                 if (user.getBalance().compareTo(totalCost) > -1) {
-                    userRepository.withdrawal(user.getId(), totalCost, connection);
-                    userRepository.overcharging(CINEMA_ID, totalCost, connection);
+                    withdrawal(user, totalCost, connection);
+                    overcharging(CINEMA_USER, totalCost, connection);
                     savepointSecondPhase = connection.setSavepoint("secondPhase");
                 } else {
                     connection.rollback(savepointFirstPhase);
@@ -99,6 +100,20 @@ public class TicketService extends AbstractService {
         } finally {
             closeConnection(connection);
         }
+    }
+
+    private void withdrawal(User user, BigDecimal totalCost, Connection connection) throws SQLException {
+        user.setBalance(user.getBalance().subtract(totalCost));
+        LOGGER.info(String.format("Withdrawal from user (%s) - %d cops", user.getName(), user.getBalance()));
+        userRepository.updateBalance(user, connection);
+        LOGGER.info(String.format("Withdrawal from user (%s) is completed", user.getName()));
+    }
+
+    private void overcharging(User user, BigDecimal totalCost, Connection connection) throws SQLException {
+        user.setBalance(user.getBalance().add(totalCost));
+        LOGGER.info(String.format("Overcharging from user (%s) - %d cops", user.getName(), user.getBalance()));
+        userRepository.updateBalance(user, connection);
+        LOGGER.info(String.format("Overcharging from user (%s) is completed", user.getName()));
     }
 
 }
