@@ -23,7 +23,7 @@ import java.util.List;
  */
 public class TicketService extends AbstractService {
     private static final Logger LOGGER = Logger.getLogger(TicketService.class);
-    public static final User CINEMA_USER = new User("0");
+    private static final User CINEMA_USER = new User("0");
 
     private TicketRepository ticketRepository;
     private UserRepository userRepository;
@@ -52,11 +52,19 @@ public class TicketService extends AbstractService {
         }
     }
 
+    public List<Integer> getPlacesByTicket(Ticket ticket) throws SQLException {
+        Connection connection = getConnection();
+        try {
+            return ticketRepository.getPlacesByTicket(ticket, connection);
+        } finally {
+            closeConnection(connection);
+        }
+    }
+
     public void buyTickets(String ticketId, User user, String places) throws BusinessException {
         Connection connection = getConnection();
         try {
             Savepoint savepointFirstPhase = null;
-            Savepoint savepointSecondPhase = null;
             String[] placesNum = StringUtils.split(places, ',');
             try {
                 connection.setAutoCommit(false);
@@ -68,30 +76,20 @@ public class TicketService extends AbstractService {
                 if (user.getBalance().compareTo(totalCost) > -1) {
                     withdrawal(user, totalCost, connection);
                     overcharging(CINEMA_USER, totalCost, connection);
-                    savepointSecondPhase = connection.setSavepoint("secondPhase");
                 } else {
                     connection.rollback(savepointFirstPhase);
                     throw new BusinessException(user.getName() + " doesn't have enough money");
                 }
-            } catch (SQLException e) {
-                try {
-                    connection.rollback(savepointFirstPhase);
-                } catch (SQLException e1) {
-                    throw new BusinessException("Transaction exception", e1);
-                }
-            }
-
-            try {
-                int count = ticketRepository.getCountExistsPlaces(ticketId, places, connection);
+                int count = ticketRepository.getCountExistsPlaces(ticket, places, connection);
                 if (placesNum.length != count) {
                     connection.rollback(savepointFirstPhase);
                     throw new BusinessException("It doesn't have need places");
                 }
-                ticketRepository.sellPlaces(ticketId, places, connection);
+                ticketRepository.sellPlaces(ticket, places, connection);
+                // TODO: User confirmation
                 connection.commit();
             } catch (SQLException e) {
                 try {
-                    connection.rollback(savepointSecondPhase);
                     connection.rollback(savepointFirstPhase);
                 } catch (SQLException e1) {
                     throw new BusinessException("Transaction exception", e1);
@@ -104,14 +102,14 @@ public class TicketService extends AbstractService {
 
     private void withdrawal(User user, BigDecimal totalCost, Connection connection) throws SQLException {
         user.setBalance(user.getBalance().subtract(totalCost));
-        LOGGER.info(String.format("Withdrawal from user (%s) - %d cops", user.getName(), user.getBalance()));
+        LOGGER.info(String.format("Withdrawal from user (%s) - %s cops", user.getName(), user.getBalance()));
         userRepository.updateBalance(user, connection);
         LOGGER.info(String.format("Withdrawal from user (%s) is completed", user.getName()));
     }
 
     private void overcharging(User user, BigDecimal totalCost, Connection connection) throws SQLException {
         user.setBalance(user.getBalance().add(totalCost));
-        LOGGER.info(String.format("Overcharging from user (%s) - %d cops", user.getName(), user.getBalance()));
+        LOGGER.info(String.format("Overcharging from user (%s) - %s cops", user.getName(), user.getBalance()));
         userRepository.updateBalance(user, connection);
         LOGGER.info(String.format("Overcharging from user (%s) is completed", user.getName()));
     }

@@ -25,6 +25,7 @@ public class TicketRepository extends AbstractRepository<Ticket> {
     private static final String UPDATE_SQL = "UPDATE tickets SET session_name = ?, ticket_cost = ? where ticket_id = ?";
     private static final String SELECT_PLACES_SQL = "SELECT count(*) FROM ticket_place_map WHERE ticket_id = ? " +
             "AND place_number in (%s)";
+    private static final String PLACES_BY_ID = "SELECT place_number FROM ticket_place_map WHERE ticket_id = ?";
     private static final String DELETE_PLACES_SQL = "DELETE FROM ticket_place_map WHERE ticket_id " +
             "= ? AND place_number in (%s)";
 
@@ -41,17 +42,28 @@ public class TicketRepository extends AbstractRepository<Ticket> {
         return tickets;
     }
 
-    public int getCountExistsPlaces(String ticketId, String placeNumbers, Connection connection) throws SQLException {
+    public int getCountExistsPlaces(Ticket ticket, String placeNumbers, Connection connection) throws SQLException {
         PreparedStatement statement = connection.prepareStatement(String.format(SELECT_PLACES_SQL, placeNumbers));
-        statement.setString(1, ticketId);
+        statement.setString(1, ticket.getId());
         ResultSet resultSet = statement.executeQuery();
         return (resultSet.next()) ? resultSet.getInt(1) : 0;
     }
 
-    public void sellPlaces(String ticketId, String placeNumbers, Connection connection) throws SQLException {
+    public void sellPlaces(Ticket ticket, String placeNumbers, Connection connection) throws SQLException {
         PreparedStatement statement = connection.prepareStatement(String.format(DELETE_PLACES_SQL, placeNumbers));
-        statement.setString(1, ticketId);
+        statement.setString(1, ticket.getId());
         statement.executeUpdate();
+    }
+
+    public List<Integer> getPlacesByTicket(Ticket ticket, Connection connection) throws SQLException {
+        PreparedStatement statement = connection.prepareStatement(PLACES_BY_ID);
+        statement.setString(1, ticket.getId());
+        ResultSet resultSet = statement.executeQuery();
+        List<Integer> places = new ArrayList<>();
+        while (resultSet.next()) {
+            places.add(resultSet.getInt("place_number"));
+        }
+        return places;
     }
 
     @Override

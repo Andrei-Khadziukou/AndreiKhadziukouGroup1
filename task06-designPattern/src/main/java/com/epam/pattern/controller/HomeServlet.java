@@ -1,11 +1,11 @@
 package com.epam.pattern.controller;
 
+import com.epam.pattern.BusinessException;
 import com.epam.pattern.domain.Ticket;
 import com.epam.pattern.domain.User;
-import com.epam.pattern.service.TicketService;
 import com.epam.pattern.service.UserService;
 import com.epam.pattern.system.DBConnectionManager;
-
+import com.epam.pattern.validation.TicketAntiCorruption;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
@@ -26,13 +26,13 @@ public class HomeServlet extends HttpServlet {
     public static final String GET_USER_ERROR_MSG = "Get user error: ";
     public static final String GET_TICKETS_ERROR_MSG = "Get tickets error: ";
 
-    private TicketService ticketService;
+    private TicketAntiCorruption ticketService;
     private UserService userService;
 
     @Override
     public void init(ServletConfig config) throws ServletException {
         DBConnectionManager manager = DBConnectionManager.getInstance();
-        ticketService = new TicketService(manager);
+        ticketService = new TicketAntiCorruption(manager);
         userService = new UserService(manager);
     }
 
@@ -41,7 +41,7 @@ public class HomeServlet extends HttpServlet {
         try {
             List<Ticket> tickets = ticketService.getTickets();
             req.setAttribute("tickets", tickets);
-        } catch (SQLException e) {
+        } catch (BusinessException e) {
             LOGGER.error(GET_TICKETS_ERROR_MSG, e);
             req.setAttribute("error", GET_USER_ERROR_MSG + e.getMessage());
         }

@@ -3,11 +3,9 @@ package com.epam.pattern.controller;
 import com.epam.pattern.BusinessException;
 import com.epam.pattern.domain.Ticket;
 import com.epam.pattern.domain.User;
-import com.epam.pattern.service.TicketService;
 import com.epam.pattern.system.DBConnectionManager;
+import com.epam.pattern.validation.TicketAntiCorruption;
 import java.io.IOException;
-import java.sql.SQLException;
-import java.util.regex.Pattern;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -22,27 +20,24 @@ import org.apache.log4j.Logger;
 @WebServlet("/cinema/order")
 public class OrderServlet extends HttpServlet {
     private static final Logger LOGGER = Logger.getLogger(OrderServlet.class);
-    public static final String WRONG_PLACES_INPUT_FORMAT_MSG = "Wrong places input format";
     public static final String BUY_TICKETS_ERROR_MSG = "Buy tickets error: ";
     public static final String GETTING_TICKET_ERROR_MSG = "Getting ticket error: ";
 
-    private Pattern pattern = Pattern.compile("\\d(,\\d)*");
-
-    private TicketService ticketService;
+    private TicketAntiCorruption ticketAntiCorruption;
 
     @Override
     public void init(ServletConfig config) throws ServletException {
         DBConnectionManager manager = DBConnectionManager.getInstance();
-        ticketService = new TicketService(manager);
+        ticketAntiCorruption = new TicketAntiCorruption(manager);
     }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String id = req.getParameter("id");
         try {
-            Ticket ticket = ticketService.findTicket(id);
+            Ticket ticket = ticketAntiCorruption.findTicket(id);
             req.setAttribute("ticket", ticket);
-        } catch (SQLException e) {
+        } catch (BusinessException e) {
             LOGGER.error(GETTING_TICKET_ERROR_MSG, e);
             req.setAttribute("error", GETTING_TICKET_ERROR_MSG + e.getMessage());
             req.getRequestDispatcher("/home.jsp").forward(req, resp);
@@ -55,19 +50,12 @@ public class OrderServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String placesParam = req.getParameter("places");
         String ticketId = req.getParameter("id");
-        if (pattern.matcher(placesParam).matches()) {
-            User user = (User) req.getSession().getAttribute("user");
-            try {
-                ticketService.buyTickets(ticketId, user, placesParam);
-            } catch (BusinessException e) {
-                LOGGER.error(BUY_TICKETS_ERROR_MSG, e);
-                req.setAttribute("error", BUY_TICKETS_ERROR_MSG + e.getMessage());
-                doGet(req, resp);
-                return;
-            }
-        } else {
-            LOGGER.warn(WRONG_PLACES_INPUT_FORMAT_MSG);
-            req.setAttribute("error", WRONG_PLACES_INPUT_FORMAT_MSG);
+        User user = (User) req.getSession().getAttribute("user");
+        try {
+            ticketAntiCorruption.buyTickets(ticketId, user, placesParam);
+        } catch (BusinessException e) {
+            LOGGER.error(BUY_TICKETS_ERROR_MSG, e);
+            req.setAttribute("error", BUY_TICKETS_ERROR_MSG + e.getMessage());
             doGet(req, resp);
             return;
         }
