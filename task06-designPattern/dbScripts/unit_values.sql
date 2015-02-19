@@ -1,8 +1,8 @@
-﻿INSERT into tickets (ticket_id, session_name, ticket_cost) VALUES ('t1','Interstellar', 20);
-INSERT into tickets (ticket_id, session_name, ticket_cost) VALUES ('t2','The Mask', 15);
-INSERT into tickets (ticket_id, session_name, ticket_cost) VALUES ('t3','The Ring', 12);
-INSERT into tickets (ticket_id, session_name, ticket_cost) VALUES ('t4','Hulk', 10);
-INSERT into tickets (ticket_id, session_name, ticket_cost) VALUES ('t5','The Batman', 7);
+﻿INSERT into tickets (ticket_id, session_name, ticket_cost, session_time_start, session_time_end) VALUES ('t1','Interstellar', 20, '9:30:00', '12:30:00');
+INSERT into tickets (ticket_id, session_name, ticket_cost, session_time_start, session_time_end) VALUES ('t2','The Mask', 10 ,'12:30:00', '13:45:00');
+INSERT into tickets (ticket_id, session_name, ticket_cost, session_time_start, session_time_end) VALUES ('t3','The Ring', 12, '14:00:00', '15:30:00');
+INSERT into tickets (ticket_id, session_name, ticket_cost, session_time_start, session_time_end) VALUES ('t4','Hulk', 10, '16:00:00', '17:30:00');
+INSERT into tickets (ticket_id, session_name, ticket_cost, session_time_start, session_time_end) VALUES ('t5','The Batman', 7, '18:00:00', '19:30:00');
 
 INSERT into ticket_place_map (ticket_id, place_number) VALUES ('t1',1);
 INSERT into ticket_place_map (ticket_id, place_number) VALUES ('t1',2);

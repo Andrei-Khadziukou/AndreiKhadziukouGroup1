@@ -1,0 +1,5 @@
+2015-02-11 18:16:03 INFO  DBConnectionManager:73 - Connection has been established! URL=[jdbc:postgresql://localhost:5432/postgres] dbUser=[postgres]
+2015-02-19 15:17:10 INFO  DBConnectionManager:73 - Connection has been established! URL=[jdbc:postgresql://localhost:5432/postgres] dbUser=[postgres]
+2015-02-19 15:58:35 INFO  DBConnectionManager:73 - Connection has been established! URL=[jdbc:postgresql://localhost:5432/postgres] dbUser=[postgres]
+2015-02-19 16:50:15 INFO  DBConnectionManager:73 - Connection has been established! URL=[jdbc:postgresql://localhost:5432/postgres] dbUser=[postgres]
+2015-02-19 16:52:47 INFO  DBConnectionManager:73 - Connection has been established! URL=[jdbc:postgresql://localhost:5432/postgres] dbUser=[postgres]

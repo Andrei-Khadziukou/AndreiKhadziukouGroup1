@@ -4,6 +4,7 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 /**
  * task06-designPattern class
@@ -14,6 +15,8 @@ import java.math.BigDecimal;
 public class Ticket extends StorageDomain {
     private BigDecimal cost;
     private Integer count;
+    private Date sessionTimeStart;
+    private Date sessionTimeEnd;
 
     public Ticket(String id, String sessionName, BigDecimal cost) {
         setId(id);
@@ -37,12 +40,30 @@ public class Ticket extends StorageDomain {
         this.count = count;
     }
 
+    public Date getSessionTimeStart() {
+        return sessionTimeStart;
+    }
+
+    public void setSessionTimeStart(Date sessionTimeStart) {
+        this.sessionTimeStart = sessionTimeStart;
+    }
+
+    public Date getSessionTimeEnd() {
+        return sessionTimeEnd;
+    }
+
+    public void setSessionTimeEnd(Date sessionTimeEnd) {
+        this.sessionTimeEnd = sessionTimeEnd;
+    }
+
     @Override
     public int hashCode() {
         return new HashCodeBuilder()
                 .append(super.hashCode())
                 .append(count)
                 .append(cost)
+                .append(sessionTimeStart)
+                .append(sessionTimeEnd)
                 .hashCode();
     }
 
@@ -53,6 +74,8 @@ public class Ticket extends StorageDomain {
             return new EqualsBuilder()
                     .append(cost, ticket.cost)
                     .append(count, ticket.count)
+                    .append(sessionTimeStart, ticket.getSessionTimeStart())
+                    .append(sessionTimeEnd, ticket.getSessionTimeEnd())
                     .isEquals();
         }
         return false;

@@ -17,7 +17,8 @@ import java.util.List;
  */
 public class TicketRepository extends AbstractRepository<Ticket> {
 
-    private static final String READ_SQL = "SELECT t.ticket_id, t.session_name, t.ticket_cost, tpm.amount " +
+    private static final String READ_SQL = "SELECT t.ticket_id, t.session_name, t.ticket_cost, t.session_time_start," +
+            "t.session_time_end, tpm.amount " +
             "FROM tickets t, (SELECT ticket_id, count(*) as amount FROM ticket_place_map GROUP BY ticket_id) tpm " +
             "WHERE t.ticket_id = tpm.ticket_id ORDER BY t.session_name asc";
 
@@ -100,6 +101,8 @@ public class TicketRepository extends AbstractRepository<Ticket> {
         String name = resultSet.getString("session_name");
         BigDecimal cost = resultSet.getBigDecimal("ticket_cost");
         Ticket ticket = new Ticket(id, name, cost);
+        ticket.setSessionTimeStart(resultSet.getTimestamp("session_time_start"));
+        ticket.setSessionTimeEnd(resultSet.getTimestamp("session_time_end"));
         return ticket;
     }
 

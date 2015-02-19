@@ -1,0 +1,23 @@
+apply plugin: 'java'
+apply plugin: 'idea'
+
+apply plugin: 'war'
+apply plugin: 'jettyEclipse'
+
+repositories {
+    jcenter()
+}
+
+dependencies {
+    compile project(':cinema-core')
+
+    providedCompile 'javax.servlet:javax.servlet-api:3.0.1'
+    providedCompile 'javax.servlet.jsp:jsp-api:2.1'
+    providedCompile 'javax.servlet:jstl:1.2'
+}
+
+//applicationDistribution.from("src/cinema-war/main/resources/config.properties") {
+  //  into "bin"
+//}
+
+//build.dependsOn.add(distZip)

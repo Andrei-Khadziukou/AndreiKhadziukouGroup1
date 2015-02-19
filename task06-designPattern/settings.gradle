@@ -1,0 +1,6 @@
+rootProject.name='task06-designPattern'
+
+include 'cinema-core'
+include 'cinema-dealer'
+include 'cinema-broker'
+include 'cinema-web'
