@@ -2,12 +2,29 @@ package com.epam.pattern.domain;
 
 /**
  * task06-designPattern class
- * <p/>
- * Copyright (C) 2015 copyright.com
- * <p/>
  * Date: Sep 02, 2015
  *
  * @author Aliaksandr_Shynkevich
  */
-public class TicketMessage {
+public class TicketMessage implements Messageable {
+
+    private String message;
+    private String value;
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    @Override
+    public String getValue() {
+        return value;
+    }
+
+    public void setValue(String value) {
+        this.value = value;
+    }
 }

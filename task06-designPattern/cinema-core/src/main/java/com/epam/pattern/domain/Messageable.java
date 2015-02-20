@@ -7,4 +7,6 @@ package com.epam.pattern.domain;
  * @author Aliaksandr_Shynkevich
  */
 public interface Messageable {
+    String getMessage();
+    String getValue();
 }

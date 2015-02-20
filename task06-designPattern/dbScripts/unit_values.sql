@@ -1,8 +1,8 @@
-﻿INSERT into tickets (ticket_id, session_name, ticket_cost, session_time_start, session_time_end) VALUES ('t1','Interstellar', 20, '9:30:00', '12:30:00');
-INSERT into tickets (ticket_id, session_name, ticket_cost, session_time_start, session_time_end) VALUES ('t2','The Mask', 10 ,'12:30:00', '13:45:00');
-INSERT into tickets (ticket_id, session_name, ticket_cost, session_time_start, session_time_end) VALUES ('t3','The Ring', 12, '14:00:00', '15:30:00');
-INSERT into tickets (ticket_id, session_name, ticket_cost, session_time_start, session_time_end) VALUES ('t4','Hulk', 10, '16:00:00', '17:30:00');
-INSERT into tickets (ticket_id, session_name, ticket_cost, session_time_start, session_time_end) VALUES ('t5','The Batman', 7, '18:00:00', '19:30:00');
+﻿INSERT into tickets (ticket_id, session_name, ticket_cost, session_time_start, session_time_end) VALUES ('t1','Interstellar', 20, '2015-02-19 9:30:00', '2015-02-19 12:30:00');
+INSERT into tickets (ticket_id, session_name, ticket_cost, session_time_start, session_time_end) VALUES ('t2','The Mask', 10 ,'2015-02-19 12:30:00', '2015-02-19 13:45:00');
+INSERT into tickets (ticket_id, session_name, ticket_cost, session_time_start, session_time_end) VALUES ('t3','The Ring', 12, '2015-02-19 14:00:00', '2015-02-19 15:30:00');
+INSERT into tickets (ticket_id, session_name, ticket_cost, session_time_start, session_time_end) VALUES ('t4','Hulk', 10, '2015-02-19 16:00:00', '2015-02-19 17:30:00');
+INSERT into tickets (ticket_id, session_name, ticket_cost, session_time_start, session_time_end) VALUES ('t5','The Batman', 7, '2015-02-19 18:00:00', '12015-02-19 9:30:00');
 
 INSERT into ticket_place_map (ticket_id, place_number) VALUES ('t1',1);
 INSERT into ticket_place_map (ticket_id, place_number) VALUES ('t1',2);
