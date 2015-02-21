@@ -1,8 +1,8 @@
 package com.epam.pattern.validation;
 
 import com.epam.pattern.BusinessException;
-import com.epam.pattern.domain.Ticket;
-import com.epam.pattern.domain.User;
+import com.epam.pattern.core.domain.Ticket;
+import com.epam.pattern.core.domain.User;
 import com.epam.pattern.service.TicketService;
 import com.epam.pattern.system.DBConnectionManager;
 import java.sql.SQLException;

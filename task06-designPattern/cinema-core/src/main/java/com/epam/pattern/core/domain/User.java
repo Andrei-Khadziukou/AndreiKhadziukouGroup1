@@ -1,4 +1,4 @@
-package com.epam.pattern.domain;
+package com.epam.pattern.core.domain;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 

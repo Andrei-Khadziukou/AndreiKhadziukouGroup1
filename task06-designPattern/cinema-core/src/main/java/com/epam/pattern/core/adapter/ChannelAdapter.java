@@ -1,6 +1,6 @@
-package com.epam.pattern.adapter;
+package com.epam.pattern.core.adapter;
 
-import com.epam.pattern.domain.Messageable;
+import com.epam.pattern.core.domain.Messageable;
 
 /**
  * task06-designPattern class

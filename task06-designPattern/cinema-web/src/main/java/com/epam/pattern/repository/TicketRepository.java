@@ -1,6 +1,6 @@
 package com.epam.pattern.repository;
 
-import com.epam.pattern.domain.Ticket;
+import com.epam.pattern.core.domain.Ticket;
 import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;

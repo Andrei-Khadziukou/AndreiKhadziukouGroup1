@@ -1,10 +1,7 @@
-package com.epam.pattern.adapter;
+package com.epam.pattern.core.adapter;
 
 /**
  * task06-designPattern class
- * <p/>
- * Copyright (C) 2015 copyright.com
- * <p/>
  * Date: Sep 02, 2015
  *
  * @author Aliaksandr_Shynkevich

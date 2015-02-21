@@ -1,6 +1,6 @@
 package com.epam.pattern.repository;
 
-import com.epam.pattern.domain.StorageDomain;
+import com.epam.pattern.core.domain.StorageDomain;
 
 import java.sql.Connection;
 import java.sql.SQLException;

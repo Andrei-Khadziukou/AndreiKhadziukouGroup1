@@ -1,6 +1,6 @@
 package com.epam.pattern.controller;
 
-import com.epam.pattern.domain.User;
+import com.epam.pattern.core.domain.User;
 import com.epam.pattern.service.UserService;
 import com.epam.pattern.system.DBConnectionManager;
 import java.io.IOException;

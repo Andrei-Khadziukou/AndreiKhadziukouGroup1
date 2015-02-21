@@ -1,6 +1,6 @@
 package com.epam.pattern.aggregator;
 
-import com.epam.pattern.domain.Ticket;
+import com.epam.pattern.core.domain.Ticket;
 import java.util.List;
 
 /**

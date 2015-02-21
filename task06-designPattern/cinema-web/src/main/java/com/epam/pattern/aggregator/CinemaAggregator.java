@@ -1,7 +1,7 @@
 package com.epam.pattern.aggregator;
 
 import com.epam.pattern.BusinessException;
-import com.epam.pattern.domain.Ticket;
+import com.epam.pattern.core.domain.Ticket;
 import com.epam.pattern.system.DBConnectionManager;
 import com.epam.pattern.validation.TicketAntiCorruption;
 import java.util.List;

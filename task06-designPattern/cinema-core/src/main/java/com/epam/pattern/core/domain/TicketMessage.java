@@ -1,4 +1,4 @@
-package com.epam.pattern.domain;
+package com.epam.pattern.core.domain;
 
 /**
  * task06-designPattern class

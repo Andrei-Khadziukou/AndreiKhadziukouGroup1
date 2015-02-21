@@ -1,8 +1,8 @@
 package com.epam.pattern.controller;
 
 import com.epam.pattern.BusinessException;
-import com.epam.pattern.domain.Ticket;
-import com.epam.pattern.domain.User;
+import com.epam.pattern.core.domain.Ticket;
+import com.epam.pattern.core.domain.User;
 import com.epam.pattern.service.UserService;
 import com.epam.pattern.system.DBConnectionManager;
 import com.epam.pattern.validation.TicketAntiCorruption;

@@ -1,7 +1,7 @@
 package com.epam.pattern.service;
 
 import com.epam.pattern.BusinessException;
-import com.epam.pattern.domain.User;
+import com.epam.pattern.core.domain.User;
 import com.epam.pattern.repository.UserRepository;
 import com.epam.pattern.system.DBConnectionManager;
 import java.sql.Connection;
