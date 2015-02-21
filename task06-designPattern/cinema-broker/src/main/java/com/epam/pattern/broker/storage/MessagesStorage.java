@@ -1,5 +1,6 @@
 package com.epam.pattern.broker.storage;
 
+import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
@@ -13,12 +14,16 @@ public class MessagesStorage {
         return instance;
     }
 
-    private ConcurrentLinkedQueue<String> queue = new ConcurrentLinkedQueue<>();
+    private Queue<String> queue = new ConcurrentLinkedQueue<>();
 
     private MessagesStorage() {
     }
 
-    public void setMessage(String message) {
+    public void putMessage(String message) {
         queue.add(message);
+    }
+
+    public String getMessage() {
+        return queue.poll();
     }
 }

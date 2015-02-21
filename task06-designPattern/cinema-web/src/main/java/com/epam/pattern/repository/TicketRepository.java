@@ -1,6 +1,7 @@
 package com.epam.pattern.repository;
 
 import com.epam.pattern.core.domain.Ticket;
+import com.epam.pattern.core.domain.TicketStatusEnum;
 import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -27,7 +28,7 @@ public class TicketRepository extends AbstractRepository<Ticket> {
     private static final String SELECT_PLACES_SQL = "SELECT count(*) FROM ticket_place_map WHERE ticket_id = ? " +
             "AND place_number in (%s)";
     private static final String PLACES_BY_ID = "SELECT place_number FROM ticket_place_map WHERE ticket_id = ?";
-    private static final String DELETE_PLACES_SQL = "DELETE FROM ticket_place_map WHERE ticket_id " +
+    private static final String UPDATE_PLACES_STATUS_SQL = "UPDATE ticket_place_map SET status = ? WHERE ticket_id " +
             "= ? AND place_number in (%s)";
 
     public List<Ticket> readAll(Connection connection) throws SQLException {
@@ -51,8 +52,9 @@ public class TicketRepository extends AbstractRepository<Ticket> {
     }
 
     public void sellPlaces(Ticket ticket, String placeNumbers, Connection connection) throws SQLException {
-        PreparedStatement statement = connection.prepareStatement(String.format(DELETE_PLACES_SQL, placeNumbers));
-        statement.setString(1, ticket.getId());
+        PreparedStatement statement = connection.prepareStatement(String.format(UPDATE_PLACES_STATUS_SQL, placeNumbers));
+        statement.setString(1, TicketStatusEnum.SOLD_OUT.name());
+        statement.setString(2, ticket.getId());
         statement.executeUpdate();
     }
 

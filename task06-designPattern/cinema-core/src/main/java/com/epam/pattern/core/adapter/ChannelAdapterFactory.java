@@ -7,4 +7,12 @@ package com.epam.pattern.core.adapter;
  * @author Aliaksandr_Shynkevich
  */
 public class ChannelAdapterFactory {
+    private ChannelAdapterFactory() {
+    }
+
+    private static ChannelAdapter channelAdapter = new ChannelAdapterImpl();
+
+    public synchronized static ChannelAdapter getAdapter() {
+        return channelAdapter;
+    }
 }

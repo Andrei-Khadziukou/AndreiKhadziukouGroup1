@@ -1,5 +1,7 @@
 package com.epam.pattern.broker;
 
+import com.epam.pattern.core.configuration.ChannelConfiguration;
+import com.epam.pattern.core.configuration.CinemaConfigurator;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -14,16 +16,17 @@ public class BrokerStarter {
 
     private BrokerReceiver receiver;
     private BrokerSender sender;
+    private ChannelConfiguration configuration = new CinemaConfigurator().getConfiguration();
 
     private BrokerStarter() {
-        receiver = new BrokerReceiver(9898);
+        receiver = new BrokerReceiver(configuration.getBrokerReceiverPort());
         receiver.start();
-        sender = new BrokerSender(8989);
+        sender = new BrokerSender(configuration.getBrokerSenderPort());
         sender.start();
         try {
             Thread.sleep(2000);
         } catch (InterruptedException e) {
-            LOGGER.info("Sleep thread error: ", e);
+            LOGGER.error("Sleep thread error: ", e);
         }
     }
 
@@ -42,11 +45,9 @@ public class BrokerStarter {
                 LOGGER.error("Keyboard reading error: ", e);
             }
         }
-
     }
 
     public static void main(String[] args) {
         new BrokerStarter().waitFinish();
-        System.exit(0);
     }
 }

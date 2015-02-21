@@ -1,5 +1,8 @@
 apply plugin: 'java'
 apply plugin: 'idea'
+apply plugin: 'application'
+
+mainClassName = "com.epam.pattern.broker.BrokerStarter"
 
 repositories {
     jcenter()
@@ -8,3 +11,5 @@ repositories {
 dependencies {
     compile project(':cinema-core')
 }
+
+build.dependsOn.add(distZip)
