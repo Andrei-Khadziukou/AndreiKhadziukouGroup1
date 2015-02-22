@@ -13,3 +13,7 @@ dependencies {
 }
 
 build.dependsOn.add(distZip)
+
+applicationDistribution.from("../cinema-core/src/main/resources/channel.properties") {
+  into "bin"
+}

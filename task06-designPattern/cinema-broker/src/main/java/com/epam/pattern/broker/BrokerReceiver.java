@@ -35,7 +35,7 @@ public class BrokerReceiver extends AbstractSocketBroker {
                         socket.getRemoteSocketAddress().toString()));
             }
         } catch (IOException e) {
-            LOGGER.info("Broker sender finished...");
+            LOGGER.info("Broker sender has finished...");
         }
     }
 }
