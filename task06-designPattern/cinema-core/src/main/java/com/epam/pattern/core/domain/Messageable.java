@@ -8,5 +8,5 @@ package com.epam.pattern.core.domain;
  */
 public interface Messageable {
     String getMessage();
-    String getValue();
+    Object getValue();
 }

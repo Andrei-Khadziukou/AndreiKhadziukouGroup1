@@ -9,6 +9,5 @@ import com.epam.pattern.core.domain.Messageable;
  * @author Aliaksandr_Shynkevich
  */
 public interface ChannelAdapter {
-
     void sendMessage(Messageable message);
 }

@@ -1,5 +1,6 @@
 package com.epam.pattern.broker;
 
+import com.epam.pattern.core.util.SocketUtil;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.SocketException;
@@ -25,6 +26,7 @@ public abstract class AbstractSocketBroker extends Thread {
     public void finish() {
         try {
             socket.setSoTimeout(2000);
+            SocketUtil.close(socket);
         } catch (SocketException e) {
             LOGGER.error("Finish broker error: ", e);
         }
@@ -35,6 +37,6 @@ public abstract class AbstractSocketBroker extends Thread {
     }
 
     protected void closeSocket() {
-       closeSocket();
+        SocketUtil.close(socket);
     }
 }

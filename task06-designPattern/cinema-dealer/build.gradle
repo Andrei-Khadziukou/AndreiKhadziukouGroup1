@@ -1,5 +1,9 @@
 apply plugin: 'java'
 apply plugin: 'idea'
+apply plugin: 'application'
+
+mainClassName = "com.epam.pattern.dealer.DealerStarter"
+
 
 repositories {
     jcenter()
@@ -7,4 +11,10 @@ repositories {
 
 dependencies {
     compile project(':cinema-core')
+}
+
+build.dependsOn.add(distZip)
+
+applicationDistribution.from("../cinema-core/src/main/resources/channel.properties") {
+    into "bin"
 }

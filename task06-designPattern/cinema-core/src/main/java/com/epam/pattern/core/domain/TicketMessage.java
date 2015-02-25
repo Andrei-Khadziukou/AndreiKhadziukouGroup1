@@ -9,7 +9,7 @@ package com.epam.pattern.core.domain;
 public class TicketMessage implements Messageable {
 
     private String message;
-    private String value;
+    private PlaceStatusDomain value;
 
     public String getMessage() {
         return message;
@@ -20,11 +20,11 @@ public class TicketMessage implements Messageable {
     }
 
     @Override
-    public String getValue() {
+    public PlaceStatusDomain getValue() {
         return value;
     }
 
-    public void setValue(String value) {
+    public void setValue(PlaceStatusDomain value) {
         this.value = value;
     }
 }

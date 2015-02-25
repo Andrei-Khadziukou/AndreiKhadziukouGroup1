@@ -1,7 +1,9 @@
 package com.epam.pattern.service;
 
 import com.epam.pattern.BusinessException;
+import com.epam.pattern.aggregator.TicketMessager;
 import com.epam.pattern.core.domain.Ticket;
+import com.epam.pattern.core.domain.TicketStatusEnum;
 import com.epam.pattern.core.domain.User;
 import com.epam.pattern.repository.TicketRepository;
 import com.epam.pattern.repository.UserRepository;
@@ -27,11 +29,13 @@ public class TicketService extends AbstractService {
 
     private TicketRepository ticketRepository;
     private UserRepository userRepository;
+    private TicketMessager ticketMessager;
 
     public TicketService(DBConnectionManager manager) {
         super(manager);
         ticketRepository = new TicketRepository();
         userRepository = new UserRepository();
+        ticketMessager = new TicketMessager();
     }
 
     public Ticket findTicket(String id) throws SQLException {
@@ -88,6 +92,7 @@ public class TicketService extends AbstractService {
                 ticketRepository.sellPlaces(ticket, places, connection);
                 // TODO: User confirmation
                 connection.commit();
+                ticketMessager.informAboutTicket(ticket, places, TicketStatusEnum.SOLD_OUT);
             } catch (SQLException e) {
                 try {
                     connection.rollback(savepointFirstPhase);

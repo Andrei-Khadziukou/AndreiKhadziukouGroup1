@@ -15,9 +15,3 @@ dependencies {
     providedCompile 'javax.servlet.jsp:jsp-api:2.1'
     providedCompile 'javax.servlet:jstl:1.2'
 }
-
-//applicationDistribution.from("src/cinema-war/main/resources/config.properties") {
-  //  into "bin"
-//}
-
-//build.dependsOn.add(distZip)
